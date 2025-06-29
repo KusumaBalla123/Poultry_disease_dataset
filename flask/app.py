@@ -9,7 +9,7 @@ app = Flask(__name__)
 # Load the trained model
 model = tf.keras.models.load_model("poultry_disease_model.h5")
 
-# Route: Home page with upload form
+
 @app.route("/")
 def home():
     return render_template("page.html")
@@ -27,8 +27,6 @@ def contact():
     return render_template("team_info.html")
 
 
-
-# Route: Handle image upload and prediction
 @app.route("/predict", methods=["POST"])
 def predict():
     if "pc_image" not in request.files:
@@ -39,7 +37,7 @@ def predict():
         return "No file selected", 400
 
     upload_folder = "static/uploads"
-    os.makedirs(upload_folder, exist_ok=True)  # Ensure folder exists
+    os.makedirs(upload_folder, exist_ok=True) 
     img_path = os.path.join(upload_folder, f.filename)
     f.save(img_path)
 
@@ -53,9 +51,8 @@ def predict():
     labels = ['Coccidiosis', 'Healthy', 'New Castle Disease', 'Salmonella']
     prediction = labels[prediction_index]
 
-    # Render the result page
+
     return render_template("contact.html", predict=prediction, image_path=img_path)
 
-# Run the app
 if __name__ == "__main__":
     app.run(debug=True)
